@@ -20,7 +20,6 @@ var queueListener = function(queueUrl, queueFunc, message, done) {
 		var messageBody = message.Body.Message || {};
 	};
 
-  console.log(messageBody)
 	queueFunc(messageBody, function(err, result) {
 		// if there is an error on one of the messages, don't stop the service, but don't delete the message from the queue
 		if (err) return done();
