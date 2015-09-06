@@ -3,14 +3,14 @@ var _highland = require("highland")
 	, async = require("async")
 	, _ = require("underscore");
 
-var deleteMessage = function(queueUrl, message, cb) {
+var deleteMessage = function(SQS, queueUrl, message, cb) {
 	SQS.deleteMessage({
 		QueueUrl: queueUrl,
 		ReceiptHandle: message.ReceiptHandle
 	}, cb);
 };
 
-var queueListener = function(queueUrl, queueFunc, message, done) {
+var queueListener = function(SQS, queueUrl, queueFunc, message, done) {
 	// try and coerce the data into JSON
 	// otherwise, leave as it is
 	try {
@@ -25,7 +25,7 @@ var queueListener = function(queueUrl, queueFunc, message, done) {
 		if (err) return done();
 
 		// delete message only if there is no error
-		deleteMessage(queueUrl, message, function(err, res) {
+		deleteMessage(SQS, queueUrl, message, function(err, res) {
 			// set these variables to null
 			// this will tell the V8 garbage collector that it is safe to collect these variables
 			queueUrl = null;
@@ -61,7 +61,7 @@ var runListener = function(SQS, queueUrl, queueFunc, options, done) {
           return a.MessageId === b.MessageId;
         }).done(function() {
     			async.each(result.Messages, function(message, callback) {
-  					queueListener(queueUrl, queueFunc, message, callback);
+  					queueListener(SQS, queueUrl, queueFunc, message, callback);
   				}, function(err, res) {
   					if (err) return done();
 
