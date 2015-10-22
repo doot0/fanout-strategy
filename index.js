@@ -2,7 +2,7 @@ var AWSStrategy = require("./aws");
 
 function Fanout() {};
 
-Fanout.prototype.AWS = AWSStrategy; 
+Fanout.prototype.AWS = AWSStrategy;
 
 Fanout.prototype.setStrategy = function(strategy) {
 	this.strategy = strategy;
@@ -14,6 +14,10 @@ Fanout.prototype.publish = function(topicName, data, callback) {
 
 Fanout.prototype.listen = function(listeners, callback) {
 	this.strategy.listen(listeners, callback);
+};
+
+Fanout.prototype.setPrefix = function(prefix) {
+	this.strategy.prefix = prefix;
 };
 
 module.exports = Fanout;
