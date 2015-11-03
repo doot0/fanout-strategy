@@ -67,20 +67,21 @@ RedisStrategy.prototype.listen = function(listeners, callback) {
 		this.listeners = _(this.listeners).extend(listeners);
 	};
 
+	_this.subClient.on("message", function(channel, message) {
+		// run the listener function corresponding to the channel, which is the queueName
+		_this.listeners[channel](JSON.parse(message), function(err) {
+			if (err) {
+				console.log("Error on %s listener", channel);
+				console.log(err)
+				console.log("------")
+				console.log(message);
+			}
+		}); // pass in anonymous function as "done"
+	});
+
   _.each(listeners, function(listenerFunc, queueName) {
     _this.subClient.subscribe(queueName);
     console.log("Subscribed to %s", queueName)
-    _this.subClient.on("message", function(channel, message) {
-      // run the listener function corresponding to the channel, which is the queueName
-      _this.listeners[channel](JSON.parse(message), function(err) {
-        if (err) {
-          console.log("Error on %s listener", channel);
-          console.log(err)
-          console.log("------")
-          console.log(message);
-        }
-      }); // pass in anonymous function as "done"
-    });
   });
 
   callback();
