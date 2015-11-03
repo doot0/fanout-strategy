@@ -1,8 +1,10 @@
 var AWSStrategy = require("./aws");
+var RedisStrategy = require("./redis");
 
 function Fanout() {};
 
 Fanout.prototype.AWS = AWSStrategy;
+Fanout.prototype.Redis = RedisStrategy;
 
 Fanout.prototype.setStrategy = function(strategy) {
 	this.strategy = strategy;
