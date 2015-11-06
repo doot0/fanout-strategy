@@ -1,6 +1,6 @@
 {
   "name": "fanout-strategy",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "Strategy pattern for publish/subscribe pattern of event-driven SOA",
   "main": "index.js",
   "scripts": {
