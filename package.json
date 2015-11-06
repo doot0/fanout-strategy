@@ -31,7 +31,6 @@
     "expect.js": "^0.3.1",
     "mocha": "^2.2.5"
   },
-  "readme": "README.md",
   "readmeFilename": "README.md",
   "_id": "fanout-strategy@1.0.5",
   "_from": "fanout-strategy@>=1.0.2 <2.0.0"
