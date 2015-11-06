@@ -106,7 +106,7 @@ AWSStrategy = module.exports = function(awsConfig) {
 
 	this.accessKeyId = awsConfig.accessKeyId;
 	this.secretAccessKey = awsConfig.secretAccessKey;
-
+	this.prefix = "";
 	this.options = awsConfig.options;
 };
 
@@ -135,7 +135,7 @@ AWSStrategy.prototype.publish = function(topicName, data, callback) {
 	var data = JSON.stringify(data);
 
  	this.SNS.publish({
-      TopicArn: 'arn:aws:sns:' + this.options.sns.region + ':' + this.options.sns.topicOwnerAWSAccountId + ':' + this.prefix + "__" + topicName,
+      TopicArn: 'arn:aws:sns:' + this.options.sns.region + ':' + this.options.sns.topicOwnerAWSAccountId + ':' + this.prefix + topicName,
       MessageStructure: this.options.sns.messageStructure || 'json',
       Message: JSON.stringify({
 				default: data,
@@ -185,7 +185,7 @@ AWSStrategy.prototype.listen = function(listeners, callback) {
 	});
 
 	async.forEachOf(listeners, function(listener, queueName, callback) {
-		queueName = _this.prefix + "__" + queueName;
+		queueName = _this.prefix + queueName;
 
 		_this.SQS.getQueueUrl({
 	      QueueName: queueName,
